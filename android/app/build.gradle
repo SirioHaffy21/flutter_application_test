@@ -38,6 +38,11 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+    apply plugin: 'com.google.gms.google-services'
+
+    dependencies {
+        implementation 'com.google.firebase:firebase-messaging:23.1.0' // hoặc phiên bản mới nhất
+    }
 }
 
 flutter {
