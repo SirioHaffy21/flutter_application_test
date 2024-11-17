@@ -14,29 +14,40 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   String? _deviceToken;
 
   @override
   void initState() {
     super.initState();
-    _getDeviceToken();
+    _initializeFCM();
   }
 
-  void _getDeviceToken() async {
-    String? token = await _firebaseMessaging.getToken();
+  void _initializeFCM() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    // Lấy Device Token
+    String? token = await messaging.getToken();
     setState(() {
       _deviceToken = token;
     });
-    print("Device Token: $token"); // In ra console
+
+    // In ra token (hoặc gửi token lên server)
+    print("Device Token: $_deviceToken");
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text("FCM Device Token")),
-        body: Center(child: Text("Device Token: $_deviceToken")),
+        appBar: AppBar(title: Text("Device Token Example")),
+        body: Center(
+          child: Text(
+            _deviceToken != null
+                ? "Device Token:\n$_deviceToken"
+                : "Loading Device Token...",
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }
