@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1073454592180",
+    "project_id": "fir-notify-1-72e77",
+    "storage_bucket": "fir-notify-1-72e77.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073454592180:android:4933758b4b3194fb58e7e1",
+        "android_client_info": {
+          "package_name": "com.company.ReceiveNotify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtDP3BEPxpxf1u9gByZNGUrDFtDS0zE7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
