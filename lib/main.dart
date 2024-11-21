@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_application_test/services/ApiService.dart';
 import 'package:flutter_application_test/ui/login_page.dart';
 
 void main() async {
@@ -13,29 +10,14 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final ApiService apiService = ApiService('http://sale.crmviet.vn:8180/crm/api/v1'); // Thay bằng URL API của bạn
+
   @override
-  //_MyAppState createState() => _MyAppState();
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Login Demo',
+      title: 'Customer App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => LoginPage(),
-        '/home': (context) => HomePage(), // Trang chính sau khi login
-      },
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Home Page')),
-      body: Center(
-        child: Text('Welcome to the Home Page!'),
-      ),
+      home: LoginPage(apiService: apiService),
     );
   }
 }

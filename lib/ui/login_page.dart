@@ -1,54 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_test/services/auth_login_service.dart';
+import 'package:flutter_application_test/services/ApiService.dart';
+import 'package:flutter_application_test/utils/genMd5.dart';
+import 'customer_list_page.dart';
 
 class LoginPage extends StatefulWidget {
+  final ApiService apiService;
+
+  const LoginPage({Key? key, required this.apiService}) : super(key: key);
+
   @override
-  // ignore: library_private_types_in_public_api
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLoading = false;
-  final AuthLoginService _authService = AuthLoginService();
 
   void _login() async {
-    setState(() {
-      _isLoading = true; // Hiển thị loading spinner
-    });
-
     try {
-      final response = await _authService.login(
+      // Gọi API đăng nhập
+      final response = (await widget.apiService.login(
         _usernameController.text.trim(),
-        _passwordController.text.trim(),
-      );
-      //response.
-      print(response.toString());
+        genMd5(_passwordController.text.trim()),
+      ));
+      
 
-      if (response['messages'] == 'success') {
-        // Đăng nhập thành công
-        print('Token: ${response['token']}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login successful!')),
+      // Chuyển sang màn hình danh sách khách hàng
+      if(response['messages'] == 'success'){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                CustomerListPage(apiService: widget.apiService, token: response['token']),
+          ),
         );
-        // Điều hướng sang trang chính (HomePage)
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        // Hiển thị lỗi nếu không thành công
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response['message'])),
-        );
+      }else{
+        throw Exception('Failed to login');
       }
+      
     } catch (e) {
-      // Hiển thị lỗi kết nối hoặc lỗi server
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        SnackBar(content: Text('$e')),
       );
-    } finally {
-      setState(() {
-        _isLoading = false; // Tắt loading spinner
-      });
     }
   }
 
@@ -59,34 +52,20 @@ class _LoginPageState extends State<LoginPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               controller: _usernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.text,
+              decoration: InputDecoration(labelText: 'Username'),
             ),
-            SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true, // Ẩn password
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _isLoading ? null : _login,
-              child: _isLoading
-                  ? CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  : Text('Login'),
+              onPressed: _login,
+              child: Text('Login'),
             ),
           ],
         ),
