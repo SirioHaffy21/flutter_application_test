@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1073454592180",
-    "project_id": "fir-notify-1-72e77",
-    "storage_bucket": "fir-notify-1-72e77.firebasestorage.app"
+    "project_number": "579760185991",
+    "project_id": "fir-notify-1-e4261",
+    "storage_bucket": "fir-notify-1-e4261.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1073454592180:android:4933758b4b3194fb58e7e1",
+        "mobilesdk_app_id": "1:579760185991:android:5c09e4359bc4279039ce22",
         "android_client_info": {
-          "package_name": "com.company.ReceiveNotify"
+          "package_name": "com.company.DemoNotify1"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCtDP3BEPxpxf1u9gByZNGUrDFtDS0zE7A"
+          "current_key": "AIzaSyCPpZuOf06KogwJzDSV4pROndNPTOHz11E"
         }
       ],
       "services": {

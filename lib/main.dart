@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_application_test/services/ApiService.dart';
+import 'package:flutter_application_test/ui/login_page.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -13,10 +15,13 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _MyAppState createState() => _MyAppState();
 }
 
+// ignore: must_be_immutable
 class _MyAppState extends State<MyApp> {
+  final ApiService apiService = ApiService('http://sale.crmviet.vn:8180/crm/api/v1'); // Thay bằng URL API của bạn
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   String? _deviceToken;
@@ -24,6 +29,7 @@ class _MyAppState extends State<MyApp> {
   String? _notifyContent;
 
   @override
+  // ignore: override_on_non_overriding_member
   void initState() {
     super.initState();
     _initializeFCM();
@@ -52,29 +58,30 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> requestNotificationPermissions() async {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
 
-  final NotificationAppLaunchDetails? details =
-      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+    final NotificationAppLaunchDetails? details =
+        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  if (details?.didNotificationLaunchApp ?? false) {
-    // Xử lý khi thông báo đã kích hoạt ứng dụng
-  }
+    if (details?.didNotificationLaunchApp ?? false) {
+      // Xử lý khi thông báo đã kích hoạt ứng dụng
+    }
 
-  if (await flutterLocalNotificationsPlugin
+    if (await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.areNotificationsEnabled() ==
+        false) {
+      await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
-          ?.areNotificationsEnabled() ==
-      false) {
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+          ?.requestPermission();
+    }
   }
-}
 
   // Hàm khởi tạo
+  // ignore: unused_element
   Future<void> _initializeNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -88,6 +95,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   // Hàm hiển thị thông báo
+  // ignore: unused_element
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
@@ -113,24 +121,34 @@ class _MyAppState extends State<MyApp> {
            UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text("Device Token Example")),
-        body: Center(
-          child: Text(
-            _deviceToken != null
-                ? "Device Token:\n$_deviceToken"
-                : "Loading Device Token...",
-            textAlign: TextAlign.center,
-          ),
-          // child: ElevatedButton(
-          //   onPressed: _showNotification, 
-          //   child: const Text('Hiển thị thông báo')
-          // )
-        ),
-      ),
+      title: 'Customer App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: LoginPage(apiService: apiService),
     );
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return MaterialApp(
+  //     home: Scaffold(
+  //       appBar: AppBar(title: Text("Device Token Example")),
+  //       body: Center(
+  //         child: Text(
+  //           _deviceToken != null
+  //               ? "Device Token:\n$_deviceToken"
+  //               : "Loading Device Token...",
+  //           textAlign: TextAlign.center,
+  //         ),
+  //         // child: ElevatedButton(
+  //         //   onPressed: _showNotification, 
+  //         //   child: const Text('Hiển thị thông báo')
+  //         // )
+  //       ),
+  //     ),
+  //   );
+  // }
 }
+
