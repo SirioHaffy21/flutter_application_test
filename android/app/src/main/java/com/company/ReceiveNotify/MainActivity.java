@@ -1,4 +1,4 @@
-package com.company.ReceiveNotify;
+package com.company.DemoNotify1;
 
 import io.flutter.embedding.android.FlutterActivity;
 
