@@ -130,25 +130,5 @@ class _MyAppState extends State<MyApp> {
       home: LoginPage(apiService: apiService),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     home: Scaffold(
-  //       appBar: AppBar(title: Text("Device Token Example")),
-  //       body: Center(
-  //         child: Text(
-  //           _deviceToken != null
-  //               ? "Device Token:\n$_deviceToken"
-  //               : "Loading Device Token...",
-  //           textAlign: TextAlign.center,
-  //         ),
-  //         // child: ElevatedButton(
-  //         //   onPressed: _showNotification, 
-  //         //   child: const Text('Hiển thị thông báo')
-  //         // )
-  //       ),
-  //     ),
-  //   );
-  // }
 }
 
