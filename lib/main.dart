@@ -13,8 +13,14 @@ void main() async {
   runApp(MyApp());
 }
 
+class MyApp extends StatefulWidget {
+  @override
+  // ignore: library_private_types_in_public_api
+  _MyAppState createState() => _MyAppState();
+}
+
 // ignore: must_be_immutable
-class MyApp extends StatelessWidget {
+class _MyAppState extends State<MyApp> {
   final ApiService apiService = ApiService('http://sale.crmviet.vn:8180/crm/api/v1'); // Thay bằng URL API của bạn
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -25,6 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   // ignore: override_on_non_overriding_member
   void initState() {
+    super.initState();
     _initializeFCM();
     tz.initializeTimeZones();
   }
@@ -34,7 +41,9 @@ class MyApp extends StatelessWidget {
 
     // Lấy Device Token
     String? token = await messaging.getToken();
-    _deviceToken = token;
+    setState(() {
+      _deviceToken = token;
+    });
 
     // In ra token (hoặc gửi token lên server)
     print("Device Token: $_deviceToken");
@@ -121,5 +130,25 @@ class MyApp extends StatelessWidget {
       home: LoginPage(apiService: apiService),
     );
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return MaterialApp(
+  //     home: Scaffold(
+  //       appBar: AppBar(title: Text("Device Token Example")),
+  //       body: Center(
+  //         child: Text(
+  //           _deviceToken != null
+  //               ? "Device Token:\n$_deviceToken"
+  //               : "Loading Device Token...",
+  //           textAlign: TextAlign.center,
+  //         ),
+  //         // child: ElevatedButton(
+  //         //   onPressed: _showNotification, 
+  //         //   child: const Text('Hiển thị thông báo')
+  //         // )
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
