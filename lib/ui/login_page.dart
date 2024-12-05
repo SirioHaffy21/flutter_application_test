@@ -6,6 +6,7 @@ import 'customer_list_page.dart';
 class LoginPage extends StatefulWidget {
   final ApiService apiService;
 
+  // ignore: use_super_parameters
   const LoginPage({Key? key, required this.apiService}) : super(key: key);
 
   @override
@@ -32,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(
             builder: (context) =>
                 CustomerListPage(apiService: widget.apiService, token: response['token']),
+                //HomePage(token: response['token']),
           ),
         );
       }else{

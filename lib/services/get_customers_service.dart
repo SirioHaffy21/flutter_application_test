@@ -28,8 +28,8 @@ class CustomerListPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final customer = customers[index];
               return ListTile(
-                title: Text(customer['name']),
-                subtitle: Text('Email: ${customer['email']}'),
+                title: Text(customer['CUSTOMER_NAME']),
+                subtitle: Text('Code: ${customer['CUSTOMER_CODE']}'),
               );
             },
           );

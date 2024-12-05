@@ -43,6 +43,8 @@ android {
     dependencies {
         implementation 'com.google.firebase:firebase-messaging:24.1.0' // hoặc phiên bản mới nhất
         implementation 'com.google.firebase:firebase-analytics'
+        // Add this in addition to your other dependencies
+        implementation 'androidx.activity:activity:1.6.0-alpha05'
         //classpath 'com.android.tools.build:gradle:8.0.2' // Sử dụng phiên bản Gradle Plugin phù hợp
         //classpath 'com.google.gms:google-services:4.4.0' // Đảm bảo phiên bản mới nhất của Google Services
     }

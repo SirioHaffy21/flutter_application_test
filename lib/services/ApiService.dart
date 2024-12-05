@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ApiService {
   final Dio _dio;
@@ -24,8 +25,6 @@ class ApiService {
           'password': password,
         },
       );
-      //print("login response: $response"); 
-      //print(response.data);
       return json.decode(response.data); // Trả về token
     } on DioException catch (e) {
       throw Exception('Login failed: ${e.response?.data ?? e.message}');
@@ -35,20 +34,15 @@ class ApiService {
   // Hàm lấy danh sách khách hàng
   Future<List<dynamic>> getCustomers(String token) async {
     try {
-      final response = await _dio.get(
-        '/customers', // API endpoint
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type':'application/json'
-          }, // Gửi token
-        ),
+      final response = await http.get(
+        Uri.parse('http://sale.crmviet.vn:8180/crm/api/v1/customers'),
+        headers: {'Authorization': 'Bearer $token',
+             'Content-Type':'application/json'},
       );
-      //print(jsonDecode(response.data).runtimeType);
-      //List<dynamic> jsonList = jsonDecode(response.data);
-      print(response.data['customers']);
-      //print(jsonList.toList(growable: false));
-      return response.data;//['customers']; // Trả về danh sách khách hàng
+      
+      final result = jsonDecode(response.body);
+      
+      return result['customers'].map((e) => Map<String, dynamic>.from(e)).toList();// Trả về danh sách khách hàng
     } on DioException catch (e) {
       throw Exception('Failed to fetch customers: ${e.response?.data ?? e.message}');
     }
