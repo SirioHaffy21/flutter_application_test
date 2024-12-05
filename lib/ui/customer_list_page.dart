@@ -18,7 +18,6 @@ class _CustomerListState extends State<CustomerListPage>{
   late Future<List<dynamic>> customersFuture;
   
   Future<List<dynamic>> fetchCustomers() async {
-    //await Future.delayed(Duration(seconds: 2)); // Giả lập thời gian xử lý API
     final customerData = await widget.apiService.getCustomers(widget.token);
     if(widget.token.isNotEmpty){
       if(customerData.isNotEmpty){
